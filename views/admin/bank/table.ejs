@@ -1,0 +1,41 @@
+<table id="example2" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nama</th>
+            <th>Nama Bank</th>
+            <th>No Rekening</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody> 
+     
+    <% for( let i = 0; i <= bank.length; i++ ) { %>
+        <% if (bank[i]?.name) { %>
+            <tr>
+                <td><%= i + 1 %> </td>
+                <td><%= bank[i]?.name %> </td> 
+                <td><%= bank[i]?.nameBank %> </td> 
+                <td><%= bank[i]?.noRekening %> </td> 
+                <td class="text-center">
+                <form action="/bank/delete/<%= bank[i]?._id %>?_method=DELETE " method="post">
+                    <a href="/bank/edit/<%= bank[i]?._id %> " class="btn btn-warning" style="color: white;">
+                    <i class="fas fa-edit " ></i> Edit</a>
+                    <button  class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>
+                        Hapus
+                    </button>
+                </form>
+                </td>
+            </tr>
+        <% } %>
+    <% } %>
+                </tbody>
+    <!-- <tfoot>
+        <tr>
+            <th>Rendering engine</th>
+            <th>Browser</th>
+            <th>Platform(s)</th>
+            
+        </tr>
+    </tfoot> -->
+</table>
