@@ -1,38 +1,35 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const voucherSchema = mongoose.Schema({
+let voucherSchema = mongoose.Schema({
+
   name: {
     type: String,
-    required: [true, "Nama game harus di isi"],
+    require: [true, 'Nama game harus diisi']
   },
+
   status: {
     type: String,
-    enum: ["Y", "N"],
-    default: "Y",
+    enum: ['Y', 'N'],
+    default: 'Y'
   },
-  thumbnail: {
-    type: String,
+
+  thumbnial: {
+    type: String
   },
+
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
+    ref: 'Category'
   },
-  nominal: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Nominal",
-    },
-  ],
+  nominals: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Nominal'
+  }],
+
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User'
   },
-  price: {
-    type: Number,
-    default: 0,
-  },
-});
+}, { timestamps: true })
 
-let Voucher = mongoose.model("Voucher", voucherSchema);
-
-module.exports = Voucher;
+module.exports = mongoose.model('Voucher', voucherSchema)

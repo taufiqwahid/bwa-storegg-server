@@ -1,23 +1,19 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const bankSchema = mongoose.Schema({
+let paymentSchema = mongoose.Schema({
   type: {
     type: String,
-    required: [true, "Tipe pembayaran harus di isi"],
+    require: [true, 'tipe pembayaran harus diisi']
   },
   status: {
     type: String,
-    enum: ["Y", "N"],
-    default: "Y",
+    enum: ['Y', 'N'],
+    default: 'Y'
   },
-  banks: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Bank",
-    },
-  ],
-});
+  banks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Bank'
+  }]
+}, { timestamps: true })
 
-let Payment = mongoose.model("Payment", bankSchema);
-
-module.exports = Payment;
+module.exports = mongoose.model('Payment', paymentSchema)

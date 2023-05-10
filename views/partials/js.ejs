@@ -4,7 +4,7 @@
 <script src="/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
-    $.widget.bridge('uibutton', $.ui.button)
+  $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -31,7 +31,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/adminlte/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="/adminlte/dist/js//adminlte/pages/dashboard.js"></script>
+<script src="/adminlte/dist/js/pages/dashboard.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -45,32 +45,26 @@
 <script src="/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- Select2 -->
+<!-- select2 -->
 <script src="/adminlte/plugins/select2/js/select2.full.min.js"></script>
 <script>
-    $(function () {
-         //Initialize Select2 Elements
-        $('.select2').select2()
-
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
-        $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
     });
+
+    $('.select2').select2()
+  });
 </script>
 </body>
-
 </html>

@@ -1,101 +1,119 @@
-const Category = require("./model");
+const Category = require('./model')
 
-module.exports = {
-  index: async (req, res) => {
+module.exports={
+  index: async(req, res)=>{
     try {
-      let alertMessage = req.flash("alertMessage");
-      let alertStatus = req.flash("alertStatus");
-      let alert = {
-        status: alertStatus,
-        message: alertMessage,
-      };
-      let category = await Category.find();
-      console.log("cek datanya category", category);
+      const alertMessage = req.flash("alertMessage")
+      const alertStatus = req.flash("alertStatus")
 
-      res.render("admin/category/view_category", { category, alert });
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/category");
-      console.log("errrr", error);
+      const alert = { message: alertMessage, status: alertStatus}
+      const category = await Category.find()
+
+      console.log("alert >>")
+      console.log(alert)
+
+      res.render('admin/category/view_category',{
+        category,
+        alert,
+        name: req.session.user.name,
+        title: 'Halaman kategori'
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/category')
+      
     }
   },
-  viewCreate: async (req, res) => {
+  viewCreate : async(req, res)=>{
     try {
-      res.render("admin/category/create");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/category");
-      console.log("errrr", error);
+      res.render('admin/category/create',{
+        name: req.session.user.name,
+        title: 'Halaman tambah kategori'
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/category')
     }
   },
-  actionCreate: async (req, res) => {
-    try {
-      const { name } = req.body;
 
-      let category = await Category({
-        name,
-      });
-      category.save();
-      req.flash("alertMessage", `Berhasil menambahkan Kategori`);
-      req.flash("alertStatus", "success");
-      res.redirect("/category");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/category");
-      console.log("errrr", error);
+  actionCreate : async(req, res)=>{
+    try {
+      const { name } = req.body
+
+      let category = await Category({ name })
+      await category.save();
+
+      req.flash('alertMessage', "Berhasil tambah kategori")
+      req.flash('alertStatus', "success")
+
+      res.redirect('/category')
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/category')
     }
   },
-  viewEdit: async (req, res) => {
+
+  viewEdit : async(req, res)=>{
     try {
-      const { id } = req?.params;
+      const { id } = req.params
+      
+      const category = await Category.findOne({_id : id})
 
-      let category = await Category.findById(id);
-
-      res.render("admin/category/edit", { category });
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/category");
-      console.log("errrr", error);
+      res.render('admin/category/edit', {
+        category,
+        name: req.session.user.name,
+        title: 'Halaman ubah kategori'
+      })
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/category')
     }
   },
-  actionEdit: async (req, res) => {
-    try {
-      const { name } = req.body;
-      const { id } = req.params;
-
-      let category = await Category.findByIdAndUpdate(id, {
-        name,
-      });
-
-      req.flash("alertMessage", `Berhasil mengubah Kategori`);
-      req.flash("alertStatus", "success");
-
-      res.redirect("/category");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/category");
-      console.log("errrr", error);
-    }
-  },
-  actionDelete: async (req, res) => {
+  
+  actionEdit: async(req, res)=>{
     try {
       const { id } = req.params;
+      const { name } = req.body 
 
-      let category = await Category.findByIdAndDelete(id);
-      req.flash("alertMessage", `Berhasil menghapus Kategori`);
-      req.flash("alertStatus", "success");
+      await Category.findOneAndUpdate({
+        _id: id
+      },{ name });
 
-      res.redirect("/category");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/category");
-      console.log("errrr", error);
+      req.flash('alertMessage', "Berhasil ubah kategori")
+      req.flash('alertStatus', "success")
+
+      res.redirect('/category')
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/category')
     }
   },
-};
+
+  actionDelete: async(req, res)=>{
+    try {
+      const { id } = req.params;
+
+      await Category.findOneAndRemove({
+        _id: id
+      });
+
+      req.flash('alertMessage', "Berhasil hapus kategori")
+      req.flash('alertStatus', "success")
+
+      res.redirect('/category')
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/category')
+    }
+  }
+}

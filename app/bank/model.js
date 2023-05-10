@@ -1,20 +1,20 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const bankSchema = mongoose.Schema({
+let bankSchema = mongoose.Schema({
+
   name: {
     type: String,
-    required: [true, "Nama bank harus di isi"],
+    require: [true, 'Nama pemilik harus diisi']
   },
-  nameBank: {
+  bankName: {
     type: String,
-    required: [true, "Nama rekening bank harus di isi"],
+    require: [true, 'Nama bank harus diisi']
   },
   noRekening: {
-    type: Number,
-    default: 0,
+    type: String,
+    require: [true, 'Nomor rekening bank harus diisi']
   },
-});
 
-let Bank = mongoose.model("Bank", bankSchema);
+}, { timestamps: true })
 
-module.exports = Bank;
+module.exports = mongoose.model('Bank', bankSchema)

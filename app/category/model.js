@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
+
 let categorySchema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Nama kategori harus diisikan"],
-  },
-});
+    require: [true, 'Nama kategori harus diiisi']
+  }
+}, { timestamps: true })
 
-module.exports = mongoose.model("Category", categorySchema);
+module.exports = mongoose.model('Category', categorySchema)

@@ -1,105 +1,116 @@
-const Nominal = require("./model");
+const Nominal = require('./model')
 
-module.exports = {
-  index: async (req, res) => {
+module.exports={
+  index: async(req, res)=>{
     try {
-      let alertMessage = req.flash("alertMessage");
-      let alertStatus = req.flash("alertStatus");
-      let alert = {
-        status: alertStatus,
-        message: alertMessage,
-      };
-      let nominal = await Nominal.find();
-      console.log("cek da tanya nominal", nominal);
+      const alertMessage = req.flash("alertMessage")
+      const alertStatus = req.flash("alertStatus")
 
-      res.render("admin/nominal/view_nominal", { nominal, alert });
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/nominal");
-      console.log("errrr", error);
+      const alert = { message: alertMessage, status: alertStatus}
+      const nominal = await Nominal.find()
+
+      res.render('admin/nominal/view_nominal',{
+        nominal,
+        alert,
+        name: req.session.user.name,
+        title: 'Halaman nominal'
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/nominal')
+      
     }
   },
-  viewCreate: async (req, res) => {
+  viewCreate : async(req, res)=>{
     try {
-      res.render("admin/nominal/create");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/nominal");
-      console.log("errrr", error);
+      res.render('admin/nominal/create',{
+        name: req.session.user.name,
+        title: 'Halaman tambah nominal'
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/nominal')
     }
   },
-  actionCreate: async (req, res) => {
-    try {
-      const { coinName, coinQuantity, price } = req.body;
 
-      let nominal = await Nominal({
-        coinName,
-        coinQuantity,
-        price,
-      });
-      nominal.save();
-      req.flash("alertMessage", `Berhasil menambahkan Nominal`);
-      req.flash("alertStatus", "success");
-      res.redirect("/nominal");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/nominal");
-      console.log("errrr", error);
+  actionCreate : async(req, res)=>{
+    try {
+      const { coinName, coinQuantity, price } = req.body
+
+      let nominal = await Nominal({ coinName, coinQuantity, price })
+      await nominal.save();
+
+      req.flash('alertMessage', "Berhasil tambah nominal")
+      req.flash('alertStatus', "success")
+
+      res.redirect('/nominal')
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/nominal')
     }
   },
-  viewEdit: async (req, res) => {
+
+  viewEdit : async(req, res)=>{
     try {
-      const { id } = req?.params;
+      const { id } = req.params
+      
+      const nominal = await Nominal.findOne({_id : id})
 
-      let nominal = await Nominal.findById(id);
-
-      res.render("admin/nominal/edit", { nominal });
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/nominal");
-      console.log("errrr", error);
+      res.render('admin/nominal/edit', {
+        nominal,
+        name: req.session.user.name,
+        title: 'Halaman ubah nominal'
+      })
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/nominal')
     }
   },
-  actionEdit: async (req, res) => {
-    try {
-      const { coinName, coinQuantity, price } = req.body;
-      const { id } = req.params;
-
-      let nominal = await Nominal.findByIdAndUpdate(id, {
-        coinName,
-        coinQuantity,
-        price,
-      });
-
-      req.flash("alertMessage", `Berhasil mengubah Nominal`);
-      req.flash("alertStatus", "success");
-
-      res.redirect("/nominal");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/nominal");
-      console.log("errrr", error);
-    }
-  },
-  actionDelete: async (req, res) => {
+  
+  actionEdit: async(req, res)=>{
     try {
       const { id } = req.params;
+      const { coinName, coinQuantity, price } = req.body 
 
-      let nominal = await Nominal.findByIdAndDelete(id);
-      req.flash("alertMessage", `Berhasil menghapus Nominal`);
-      req.flash("alertStatus", "success");
+      await Nominal.findOneAndUpdate({
+        _id: id
+      },{ coinName, coinQuantity, price });
 
-      res.redirect("/nominal");
-    } catch (error) {
-      req.flash("alertMessage", `${error?.message || "Internal server error"}`);
-      req.flash("alertStatus", "danger");
-      res.redirect("/nominal");
-      console.log("errrr", error);
+      req.flash('alertMessage', "Berhasil ubah nominal")
+      req.flash('alertStatus', "success")
+
+      res.redirect('/nominal')
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/nominal')
     }
   },
-};
+
+  actionDelete: async(req, res)=>{
+    try {
+      const { id } = req.params;
+
+      await Nominal.findOneAndRemove({
+        _id: id
+      });
+
+      req.flash('alertMessage', "Berhasil hapus nominal")
+      req.flash('alertStatus', "success")
+
+      res.redirect('/nominal')
+      
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/nominal')
+    }
+  }
+}

@@ -1,114 +1,111 @@
 <%- include ../../partials/header.ejs %>
-    <%- include ../../partials/navbar.ejs %>
-        <%- include ../../partials/sidebar.ejs %>
+<%- include ../../partials/navbar.ejs %>
+<%- include ../../partials/sidebar.ejs %>
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Voucher</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/voucher">Voucher</a></li>
+            <li class="breadcrumb-item active">Tambah</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
 
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
-                <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <h1>Voucher</h1>
-                            </div>
-                            <div class="col-sm-6">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                    <li class="breadcrumb-item "><a href="/voucher">Voucher</a></li>
-                                    <li class="breadcrumb-item active">Create</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div><!-- /.container-fluid -->
-                </section>
-
-                <!-- Main content -->
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                  
-                            <!-- /.card-header -->
-                                <!-- general form elements -->
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Tambah Voucher</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <!-- form start -->
-                                    <form action="/voucher/create" method="post" enctype="multipart/form-data" >
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label>Nama Game</label>
-                                                <input type="text"  name="name" class="form-control" id="inputnamaVoucher"
-                                                    placeholder="Masukkan nama game">
-                                            </div>
-                                            <div class="form-group">
-                                                <label> Kategori</label>
-                                                <select class="form-control select2" name="category" style="width: 100%;" >
-                                                    <option selected="selected" class="p-4">Pilih Kategori</option>
-                                                    <% category?.forEach(item => { %>
-                                                        <option value="<%= item?._id %>"><%= item?.name %> </option>
-                                                    <% }) %>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Nominal</label>
-                                                <select class="form-control select2 red" name="nominal" multiple="multiple" required data-placeholder="Pilih Nominal" style="width: 100%;">
-                                                    <% nominal?.forEach(item=> { %>
-                                                        <option value="<%= item?._id %>">
-                                                            <%= item?.coinName %> - <%= item?.price %>
-                                                        </option>
-                                                        <% }) %>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Thumbnail</label>
-                                                <input type="file"  name="thumbnail" class="form-control" id="thumbnail" placeholder="Masukkan gambar">
-                                                <br>
-                                                <img src="" id="preview" alt="" srcset="">
-                                            </div>
-                                            
-                                        </div>
-                                        <!-- /.card-body -->
-                                
-                                        <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- /.card -->
-                                    <!-- /.card-body -->
-                                <!-- /.card -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.container-fluid -->
-                </section>
-                <!-- /.content -->
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Form tambah voucher</h3>
             </div>
-            <!-- /.content-wrapper -->
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form action="/voucher/create" method="POST" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="name">Nama game</label>
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Masukan nama game" required>
+                </div>
+                <div class="form-group">
+                  <label>Kategori</label>
+                  <select class="form-control select2" style="width: 100%;" name="category" required>
+                    <option selected="selected">Pilih kategori</option>
+                    <% category.forEach(category=>{ %>
+                      <option value="<%= category._id %>"><%= category.name %></option>
+                    <% }) %>
+                    
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Nominal</label>
+                  <div class="select2-purple">
+                    <select 
+                      class="form-control select2" 
+                      multiple="multiple" 
+                      data-placeholder="Pilih nominal"
+                      style="width: 100%;"
+                      name="nominals" 
+                      required>
+                      <% nominal.forEach(nominal=>{ %>
+                        <option value="<%= nominal._id %>"><%= nominal.coinName %> <%= nominal.coinQuantity %></option>
+                      <% }) %>
+                      
+                    </select>
 
-            <%- include ../../partials/sidebar.ejs %>
-       <%- include ../../partials/footer.ejs %>
-     <%- include ../../partials/js.ejs %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="image">Gambar</label>
+                  <input type="file" name="image" class="form-control" id="image" placeholder="Masukan gambar" required>
+                  <br >
+                  <img src="" id="perview"> 
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
 
-     <script>
-        function readUrl (input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader()
+<%- include ../../partials/footer.ejs %>
+<%- include ../../partials/js.ejs %>
 
-                reader.onload = function (e){
-                    $('#preview').attr('src', e.target.result)
-                    $('#preview').attr('width', '20%')
-                    $('#preview').attr('height', '20%')
-                }
-                reader.readAsDataURL(input.files[0])
-            }
-        }
-        $('#thumbnail').change(function(){
-            readUrl(this)
-        })
-     </script>
+<script>
+  function readURL (input){
+    if(input.files && input.files[0]){
+      const reader = new FileReader();
+
+      reader.onload = function(e){
+        $('#perview').attr('src', e.target.result);
+        $('#perview').attr('width', '20%');
+        $('#perview').attr('height', '20%');
+      }
+
+      reader.readAsDataURL(input.files[0])
+    }
+  }
+
+  $('#image').change(function(){
+    readURL(this)
+  })
+</script>
